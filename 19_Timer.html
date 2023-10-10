@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        #box1{
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+            position:absolute;
+            left: 0px;
+        }
+
+        #box2{
+            width: 100px;
+            height: 100px;
+            background-color:cornflowerblue;
+            position:absolute;
+            left: 0px;
+        }
+
+    </style>
+    <script type="text/javascript">
+        window.onload = function(){
+            
+            //获取box1
+            var box1 = document.getElementById("box1");
+
+            //获取btn01
+            var btn01 = document.getElementById("btn01");
+            var btn02 = document.getElementById("btn02");
+            var timer;
+
+
+
+            //after click, move to right(left value rise)
+            btn01.onclick = function(){
+                clearInterval(timer);
+
+              //turn on a timer
+              var timer = setInterval(function(){
+
+                //获取box1原来的left值
+                var oldValue = parseInt(getStyle(box1,"left"));
+
+                //旧值基础上增加
+                var newValue = oldValue +33;
+
+                if(newValue > 800){
+                    newValue = 800;
+                }
+
+                //新值设置给box1
+                box1.style.left = newValue +"px";
+
+                if(newValue === 800 ){
+                    clearInterval(timer);
+                }
+               
+
+                
+              }, 30);
+
+            }
+
+
+             //after click, move to left(left value decrease)
+             btn02.onclick = function(){
+                clearInterval(timer);
+
+              //turn on a timer
+              var timer = setInterval(function(){
+
+                //获取box1原来的left值
+                var oldValue = parseInt(getStyle(box1,"left"));
+
+                //旧值基础上增加
+                var newValue = oldValue - 33;
+
+                if(newValue < 0 ){
+                    newValue = 0;
+                }
+
+                //新值设置给box1
+                box1.style.left = newValue +"px";
+
+                if(newValue === 0 ){
+                    clearInterval(timer);
+                }
+               
+
+                
+              }, 33);
+
+            }
+
+
+         //定义一个函数，用来 获取指定元素的当前样式  obj获取样式的元素  name获取的样式名
+         function getStyle(obj,name){
+            if(window.getComputedStyle){
+                return getComputedStyle(obj,null)[name];
+            }
+         }
+
+
+
+          // 创建一个可以执行简单动画的函数
+          //参数  obj 要执行动画的对象  attr要执行动画的样式(height,width) target执行动画的目标位置 speed 移动的速度
+          function move(obj,attr,target,speed,callback){
+                clearInterval(timer);
+
+                //获取元素目前的位置
+                var current = parseInt(getStyle(obj,attr));
+
+                if(current > target){
+                    speed = -speed;
+                }
+
+              //turn on a timer
+              //向执行动画中对象中添加一个timer属性，用来保存它自己的定时器标识
+              obj.timer = setInterval(function(){
+
+                //获取box1原来的left值
+                var oldValue = parseInt(getStyle(obj,attr));
+
+                //旧值基础上增加
+                var newValue = oldValue + speed;     
+
+                //向左移动时，newValue 小于target
+                if((speed<0 && newValue < target) || (speed>0 && newValue > target)){
+                    newValue = target;
+                }
+
+                //新值设置给box1
+                obj.style[attr] = newValue +"px";
+
+                if(newValue === target ){
+                    clearInterval(obj.timer);
+                    //动画执行完毕，调用回调函数
+                    callback && callback();
+                }
+               
+
+                
+              }, 33);
+
+            }
+
+
+        var box2 = document.getElementById("box2");
+        var btn03 = document.getElementById("btn03");
+        btn03.onclick = function(){
+            move(box2,"width",800,10,function(){
+                move(box2,"height",200,10)
+            });
+        };
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+</head>
+<body>
+    <button id="btn01">click to move right</button>
+    <button id="btn02">click to move left</button>
+    <button id="btn03">test</button>
+    <br><br>
+    <div id="box1"></div>
+    <br><br><br><br><br><br><br><br>
+    <div id="box2"></div>
+</body>
+</html>
