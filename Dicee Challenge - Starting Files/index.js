@@ -11,6 +11,7 @@ var image1 = document.querySelectorAll("img")[0];
 image1.setAttribute("src", randomImageSource1);
 
 
+// number 2 -- for readable
 var randomNumber2= Math.floor(Math.random() * 6) + 1;  //1-6
 
 console.log(randomNumber2);
